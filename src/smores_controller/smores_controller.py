@@ -37,6 +37,10 @@ class SMORESController():
         if module_obj is None: return None
         self._sendTorque(module_obj, 90.0, 90.0)
 
+    def driveBackward(self, module_obj):
+        if module_obj is None: return None
+        self._sendTorque(module_obj, -90.0, -90.0)
+
     def driveWithLocal(self, module_obj, v, w):
         if isinstance(module_obj, int):
             module_obj = self.getModuleObjectFromID(module_obj)
