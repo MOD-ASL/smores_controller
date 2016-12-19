@@ -37,6 +37,13 @@ class SMORESController():
         if module_obj is None: return None
         self._sendTorque(module_obj, 90.0, 90.0)
 
+    def spin(self, module_obj, direction="cw"):
+        if module_obj is None: return None
+        if direction == "ccw":
+            self._sendTorque(module_obj, 20.0, -20.0)
+        elif direction == "cw":
+            self._sendTorque(module_obj, -20.0, 20.0)
+
     def driveBackward(self, module_obj):
         if module_obj is None: return None
         self._sendTorque(module_obj, -90.0, -90.0)
