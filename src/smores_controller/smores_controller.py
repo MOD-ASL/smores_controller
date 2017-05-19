@@ -54,6 +54,7 @@ class SMORESController():
         #    v = sign(v)*self.max_v
         #if abs(w) > self.max_w:
         #    w = sign(w)*self.max_w
+        print("Vel is {:.4f} and {:.4f}".format(v, w))
         left_vel = v * self.v_scale + w * self.w_scale
         right_vel = v * self.v_scale - w * self.w_scale
 
@@ -67,13 +68,13 @@ class SMORESController():
         rospy.logdebug("Stoping all motors ...")
         for i in xrange(self._cmd_repeat_time):
             module_obj.move.send_torque('left', 0)
-            rospy.sleep(0.01)
+            rospy.sleep(0.05)
             module_obj.move.send_torque('right', 0)
-            rospy.sleep(0.01)
+            rospy.sleep(0.05)
             module_obj.move.send_torque('pan', 0)
-            rospy.sleep(0.01)
+            rospy.sleep(0.05)
             module_obj.move.send_torque('tilt', 0)
-            rospy.sleep(0.01)
+            rospy.sleep(0.05)
 
     def _sendTorque(self,module_obj, left_t, right_t):
         if abs(left_t) > self._max_torque:
@@ -85,16 +86,18 @@ class SMORESController():
             right_t = sign(right_t) * self._max_torque
             left_t = left_t / scale
 
+        print("WheelCmd is {:.4f} and {:.4f}".format(left_t, -right_t))
         for i in xrange(self._cmd_repeat_time):
             module_obj.move.send_torque('left', left_t)
-            time.sleep(0.01)
+            time.sleep(0.05)
             module_obj.move.send_torque('right', -right_t)
-            time.sleep(0.01)
+            time.sleep(0.05)
 
     def global2Local(self, x, y, theta):
-        vx = 1.1*x
-        vy = 1.1*y
-        w = (1/0.10)*(-sin(theta)*vx + cos(theta)*vy)
+        print("Global V is {:.4f} and {:.4f}".format(x, y))
+        vx = x
+        vy = y
+        w = (1/0.05)*(-sin(theta)*vx + cos(theta)*vy)
         v = cos(theta)*vx + sin(theta)*vy
         return [v,w]
 
